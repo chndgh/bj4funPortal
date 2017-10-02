@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/flex/flex",
+    "pages/grid/grid",
+    "pages/logs/logs",
+    "pages/createActivity/createActivity",
+    "pages/test/test",
+    "pages/success_deliver/success_deliver"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "Let's Happy",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#fff",
+    "selectedColor": "#32CD32",
+    "borderStyle": "black",
+    "backgroundColor": "#D3D3D3",
+    "list": [
+      {
+        "pagePath": "pages/test/test",
+        "iconPath": "icons/activity_2.png",
+        "selectedIconPath": "icons/activity_1.png",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/createActivity/createActivity",
+        "text": "test"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/flex/flex",
+        "text": "flex"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+<view class="main">
+  <view class='outer'>
+    <view class="inner">
+          <view class="item itemDetail">
+            <image class="icons" src="../../icons/person.png" ></image>
+          </view>
+          <view class="item itemDetail">
+            <image class="icons" src="../../icons/article.png" ></image>
+          </view>
+    </view>
+    <view class="inner" >
+          <view class="item itemDetail">
+            <image class="icons" src="../../icons/debt.png" ></image>
+          </view>
+          <view class="item itemDetail" bindtap='bindToActivity'>
+            <image class="icons" src="../../icons/activity.png" ></image>
+          </view>
+    </view>
+  </view>
+</view>
