@@ -27,7 +27,7 @@
         "text": "活动"
       },
       {
-        "pagePath": "pages/createActivity/createActivity",
+        "pagePath": "pages/grid/grid",
         "text": "test"
       },
       {
