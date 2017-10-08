@@ -45,18 +45,20 @@ Page({
     })
   },
   formSubmit: function (e) {
+    var that = this;
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
     console.log(e.detail.value.startDate + " " + e.detail.value.startTime);
     var startTime = e.detail.value.startDate + " " + e.detail.value.startTime;
     var endTime = e.detail.value.endDate + " " + e.detail.value.endTime;
-    this.activityItem= {id:1, title: e.detail.value.title, startTime: startTime, endTime: endTime, description: e.detail.value.description }
-  console.log(this.activityItem);
+    this.activityItem = { id: 1, title: e.detail.value.title, startTime: startTime, endTime: endTime, description: e.detail.value.description }
+    console.log(this.activityItem);
     wx.request({
-      url: "https://ec9aa434.ngrok.io/activity/create",
+      url: "http://localhost:8080/activity/create",
       data: { id: 1, title: e.detail.value.title, startTime: startTime, endTime: endTime, description: e.detail.value.description },
-      method:"POST",
+      method: "POST",
       header: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "userId": this.userInfo.subOpenId
       },
       success: function (res) {
         console.log(res.data)
@@ -65,11 +67,14 @@ Page({
         console.log(err)
       }
     })
-
-    
   },
   formReset: function () {
     console.log('form发生了reset事件')
+  },
+  successdeliver: function () {
+    wx.navigateTo({
+      url: "../success_deliver/success_deliver"
+    })
   },
   /**
    * 生命周期函数--监听页面加载

@@ -1,12 +1,14 @@
 {
   "pages": [
+    "pages/activity/activity",
     "pages/index/index",
     "pages/flex/flex",
     "pages/grid/grid",
-    "pages/logs/logs",
     "pages/createActivity/createActivity",
-    "pages/test/test",
-    "pages/success_deliver/success_deliver"
+    "pages/success_deliver/success_deliver",
+    "pages/template/descTemplate",
+    "pages/activity/historyActivity/historyActivity",
+    "pages/activity/detailActivity/detailActivity"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -21,7 +23,7 @@
     "backgroundColor": "#D3D3D3",
     "list": [
       {
-        "pagePath": "pages/test/test",
+        "pagePath": "pages/activity/activity",
         "iconPath": "icons/activity_2.png",
         "selectedIconPath": "icons/activity_1.png",
         "text": "活动"

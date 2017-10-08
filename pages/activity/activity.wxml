@@ -1,0 +1,126 @@
+<!--pages/test/test.wxml-->
+<import src="../createActivity/createActivity.wxml"/> 
+<view class="page">
+    <view class="page__bd">
+        <view class="weui-tab">
+            <view class="weui-navbar" style='background-color:white'>
+                <block wx:for="{{tabs}}" wx:key="*this">
+                    <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" bindtap="tabClick">
+                        <view class="weui-navbar__title">{{item}}</view>
+                    </view>
+                </block>
+                <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+            </view>
+            <view class="weui-tab__panel">
+              <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+                <view class="inner">
+                      <navigator class="action_style" url='historyActivity/historyActivity?status=1004'>
+                        <image class="icons" src="../../icons/history_action.png" ></image>
+                        <view class="action_sub_style">历史</view>
+                      </navigator>
+                      <view>
+                        <image class="icons" src="../../icons/current_action.png" ></image>
+                        <view class="action_sub_style">当前</view>
+                      </view>
+                      <view>
+                        <image class="icons" src="../../icons/vote.png" ></image>
+                        <view class="action_sub_style">我的</view>
+                      </view>
+                </view>
+                <navigator url="" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
+                    <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
+                        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
+                            <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/football.png" />
+                        </view>
+                        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                            <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
+                            <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
+                        </view>   
+                    </view>
+                    <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
+                        <view class="weui-media-box__info__meta">时间</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+                    </view>
+                </navigator> 
+              </view>
+              <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+                 <form bindsubmit="formSubmit" bindreset="formReset">
+                    <view class="weui-cells weui-cells_after-title">
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                <view class="create_action">活动名称</view>
+                            </view>
+                            <view class="weui-cell__bd">
+                                <input name="title" class="weui-input" bindinput="bindTitleChange" />
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd" style='width:100%;background-color: 	#9BCD9B;'>
+                                <view class="create_action" style="justify-content:center">活动开始时间</view>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                <view class="create_action">日期</view>
+                            </view>
+                            <view class="weui-cell__bd">
+                                <picker name="startDate" mode="date" start="2015-09-01" end="2017-09-01" bindchange="bindStartDateChange">
+                                    <view class="weui-input">{{startDate}}</view>
+                                </picker>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                <view class="create_action">时间</view>
+                            </view>
+                            <view class="weui-cell__bd">
+                                <picker name="startTime" mode="time" start="09:01" end="21:01" bindchange="bindStartTimeChange">
+                                    <view class="weui-input">{{startTime}}</view>
+                                </picker>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd" style='width:100%;background-color: 	#9BCD9B;'>
+                                <view class="create_action" style="justify-content:center">活动结束时间</view>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                <view class="create_action">日期</view>
+                            </view>
+                            <view class="weui-cell__bd">
+                                <picker name="endDate" mode="date" start="2015-09-01" end="2017-09-01" bindchange="bindEndDateChange">
+                                    <view class="weui-input">{{endDate}}</view>
+                                </picker>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                            <view class="weui-cell__hd">
+                                <view class="create_action">时间</view>
+                            </view>
+                            <view class="weui-cell__bd">
+                                <picker name="endTime" mode="time" start="09:01" end="21:01" bindchange="bindEndTimeChange">
+                                    <view class="weui-input">{{endTime}}</view>
+                                </picker>
+                            </view>
+                        </view>
+                        <view class="weui-cell weui-cell_input">
+                          <view style='font-size:16px;font-family:"楷体";'>活动描述</view>
+                          <textarea name="description" bindinput="bindDescChange" class="weui-textarea" style="height: 5.3em" />
+                                      <view class="weui-textarea-counter">0/200</view>
+                        </view>
+                    </view>
+                    <view class="page__bd page__bd_spacing" style='border=1px'>
+                        <view class="button-sp-area">
+                            <button class="weui-btn mini-btn" bindtap="successdeliver" type="primary" formType="submit">发布活动</button>
+                            <button class="weui-btn mini-btn" type="primary" formType="reset">重新输入</button>
+                        </view>
+                    </view>
+                  </form>
+              </view>
+            </view>
+        </view>
+    </view>
+</view>
