@@ -3,6 +3,8 @@ var util = require('../../utils/util.js');
 
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 const app = getApp();
+var USER = {}; //pass to back end to login
+var JS_CODE = ''; //store user login js_code
 Page({
   data: {
     tabs: ["所有活动", "创建活动"],
@@ -33,7 +35,7 @@ Page({
   getAvaliableActivities:function(){
     var that = this;
     wx.request({
-      url: "http://localhost:8080/activity/availableActivity",
+      url: "http://localhost:8080/activity/available",
       data: {},
       method: "GET",
       header: {
@@ -62,7 +64,43 @@ Page({
   onLoad: function () {
     var that = this;
     this.userInfo = wx.getStorageSync('userInfo');
-    that.getAvaliableActivities();
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        JS_CODE = res.code;
+        // 获取用户信息
+        wx.getSetting({
+          success: res => {
+            wx.getUserInfo({
+              success: res => {
+                // 可以将 res 发送给后台解码出 unionId
+                USER = res.userInfo;
+                USER.jsCode = JS_CODE;
+                wx.request({
+                  url: "http://localhost:8080/user/login",
+                  data: JSON.stringify(USER),
+                  method: "POST",
+                  success: function (res) {
+                    console.log("111111111");
+                    that.getAvaliableActivities();
+                    wx.setStorageSync("userInfo", res.data.data);
+                  },
+                  fail: function (err) {
+                    console.log(err)
+                  }
+                })
+                // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+                // 所以此处加入 callback 以防止这种情况
+                if (this.userInfoReadyCallback) {
+                  this.userInfoReadyCallback(res)
+                }
+              }
+            })
+          }
+        })
+      }
+    });
     wx.getSystemInfo({
       success: function (res) {
         that.setData({

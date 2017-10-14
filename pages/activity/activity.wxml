@@ -14,20 +14,20 @@
             <view class="weui-tab__panel">
               <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
                 <view class="inner">
-                      <navigator class="action_style" url='historyActivity/historyActivity?status=1004'>
+                      <navigator class="action_style" url='statusActivity/statusActivity?status=history'>
                         <image class="icons" src="../../icons/history_action.png" ></image>
                         <view class="action_sub_style">历史</view>
                       </navigator>
-                      <view>
+                      <navigator class="action_style" url='statusActivity/statusActivity?status=current'>
                         <image class="icons" src="../../icons/current_action.png" ></image>
                         <view class="action_sub_style">当前</view>
-                      </view>
-                      <view>
+                      </navigator>
+                      <navigator class="action_style" url='statusActivity/statusActivity?status=own'>
                         <image class="icons" src="../../icons/vote.png" ></image>
                         <view class="action_sub_style">我的</view>
-                      </view>
+                      </navigator>
                 </view>
-                <navigator url="" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
+                <navigator url="detailActivity/detailActivity?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
                     <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
                         <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
                             <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/football.png" />

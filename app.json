@@ -2,9 +2,8 @@
   "pages": [
     "pages/activity/activity",
     "pages/index/index",
-    "pages/flex/flex",
-    "pages/grid/grid",
-    "pages/success_deliver/success_deliver",
+    "pages/activity/statusActivity/statusActivity",
+    "pages/activity/detailActivity/detailActivity",
     "pages/activity/historyActivity/historyActivity",
     "pages/activity/detailActivity/detailActivity",
     "pages/createActivity/createActivity"
