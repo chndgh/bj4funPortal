@@ -1,4 +1,5 @@
 // pages/activity/detailActivity/detailActivity.js
+var utils = require('../../../utils/util.js');
 Page({
 
   /**
@@ -30,8 +31,13 @@ Page({
         success: function (res) {
           console.log(res);
           console.log(that.userInfo);
+
+          var actList = res.data.data;
+          actList.startTime = utils.formatTime(new Date(actList.startTime));
+          actList.endTime = utils.formatTime(new Date(actList.endTime));
+          console.log(actList.startTime);
           that.setData({
-            activity: res.data.data,
+            activity: actList,
             userInfo:that.userInfo
           });
         },

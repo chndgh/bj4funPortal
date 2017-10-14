@@ -1,5 +1,5 @@
+var utils = require('../../../utils/util.js');
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -8,7 +8,8 @@ Page({
     activityList: [],
     status,
     sendStatus:new Array,
-
+    activitylogo: { '100': 'health', '101': 'eat', '102': 'relax', '103': 'reset', '104': 'meeting', '105': 'study', '106': 'category_default' },
+    activityStatus: { '1001': '未发布', '1002': '投票中', '1003': '待开始', '1004': '进行中', '1005': '已结束' }
   },
 
   /**
@@ -35,6 +36,8 @@ Page({
     }else if(this.status=="own"){
       that.getOwnActivities();
     }
+    console.log(that.data.activityList)
+   
   },
   getOwnActivities:function(){
     var that = this;
@@ -47,8 +50,16 @@ Page({
         "userId": this.userInfo.subOpenId
       },
       success: function (res) {
+        console.log("111111111");
+        console.log(res.data.data);
+        var actList = res.data.data;
+        for (var item in actList) {
+          console.log(actList[item]);
+          actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
+          console.log(actList[item].startTime);
+        }
         that.setData({
-          activityList: res.data.data
+          activityList: actList
         });
       },
       fail: function (err) {
@@ -68,6 +79,11 @@ Page({
         "userId": this.userInfo.subOpenId
       },
       success: function (res) {
+        for(item in res.data.data){
+          item.startTime = utils.formatTime(item.startTime);
+          console.log("2222222");
+          console.log(item.startTime);
+        }
         that.setData({
           activityList: res.data.data
         });

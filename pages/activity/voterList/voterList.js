@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    activityId,
+    activityId:0,
     voterList:[],
   },
 
@@ -19,7 +19,7 @@ Page({
   getActivityById:function(activityId){
     var that = this;
     wx.request({
-      url: "http://localhost:8080/activity/" + activityId + "/detail",
+      url: "http://localhost:8080/activity/" + that.activityId + "/detail",
       method: "GET",
       success: function (res) {
         that.userList = res.data.data.voters;
@@ -28,7 +28,7 @@ Page({
         console.log(err)
       }
     })
-  }
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

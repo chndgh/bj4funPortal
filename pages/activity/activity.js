@@ -1,4 +1,4 @@
-var util = require('../../utils/util.js');
+var utils = require('../../utils/util.js');
 
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 const app = getApp();
@@ -29,6 +29,7 @@ Page({
     publicity: '',
     description: '',
     activityStatus: {'1001':'未发布', '1002':'投票中', '1003':'待开始', '1004':'进行中', '1005':'已结束'},
+    activitylogo: { '100': 'health', '101': 'eat', '102': 'relax', '103': 'reset', '104': 'meeting', '105': 'study' , '106':'category_default'},
     activityItem: {}
   },
   getAvaliableActivities:function(){
@@ -42,8 +43,14 @@ Page({
         "userId": this.userInfo.subOpenId
       },
       success: function (res) {
+        var actList = res.data.data;
+        for (var item in actList) {
+          console.log(actList[item]);
+          actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
+          console.log(actList[item].startTime);
+        }
         that.setData({
-          activityList: res.data.data
+          activityList: actList
         });
       },
       fail: function (err) {
