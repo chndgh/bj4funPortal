@@ -4,9 +4,8 @@
     "pages/index/index",
     "pages/activity/statusActivity/statusActivity",
     "pages/activity/detailActivity/detailActivity",
-    "pages/activity/historyActivity/historyActivity",
-    "pages/activity/detailActivity/detailActivity",
-    "pages/createActivity/createActivity"
+    "pages/createActivity/createActivity",
+    "pages/activity/voterList/voterList"
   ],
   "window": {
     "backgroundTextStyle": "light",

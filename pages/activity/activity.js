@@ -1,4 +1,3 @@
-// pages/selfInfo/selfInfo.js
 var util = require('../../utils/util.js');
 
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
@@ -51,15 +50,6 @@ Page({
         console.log(err)
       }
     })
-  },
-  bindToHistoryActivity:function(){
-
-  },
-  bindToCurrentActivity:function(){
-
-  },
-  bindtToOwnActivity:function(){
-
   },
   onLoad: function () {
     var that = this;
@@ -162,6 +152,8 @@ Page({
     console.log(e.detail.value)
   },
   bindStartDateChange: function (e) {
+    console.log(e.detail.value);
+    console.log(new Date(e.detail.value).getTime());
     this.setData({
       startDate: e.detail.value,
       actStTime: e.detail.value
@@ -216,8 +208,8 @@ Page({
     var that = this;
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
     console.log(e.detail.value.startDate + " " + e.detail.value.startTime);
-    var startTime = e.detail.value.startDate + " " + e.detail.value.startTime;
-    var endTime = e.detail.value.endDate + " " + e.detail.value.endTime;
+    var startTime = new Date(e.detail.value.startDate + " " + e.detail.value.startTime).getTime();
+    var endTime = new Date(e.detail.value.endDate + " " + e.detail.value.endTime).getTime();
 
     /* tile, time, address must not empty */
     if (e.detail.value.title == "" ||
@@ -253,20 +245,22 @@ Page({
       return;
     }
 
-
     this.activityItem = { id: 1, title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, people: e.detail.value.peoplenumber, activitytype: that.data.array[e.detail.value.activitytype], publicity: e.detail.value.publicity, description: e.detail.value.description }
-    console.log(this.activityItem);
-
     wx.request({
       url: "http://localhost:8080/activity/create",
-      data: { id: 1, title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, people: e.detail.value.peoplenumber, activitytype: that.data.array[e.detail.value.activitytype], publicity: e.detail.value.publicity, description: e.detail.value.description },
+      data: JSON.stringify(that.activityItem),
       method: "POST",
       header: {
         "Content-Type": "application/json",
         "userId": this.userInfo.subOpenId
       },
       success: function (res) {
-        console.log(res.data)
+        console.log(res);
+        if(res.data.status==0&&res.data.data!=null){
+          wx.navigateTo({
+            url: "statusActivity/statusActivity?status=own"
+          })
+        }
       },
       fail: function (err) {
         console.log(err)
@@ -276,12 +270,7 @@ Page({
   },
   formReset: function () {
     console.log('form发生了reset事件')
-  },
-  successdeliver: function () {
-    wx.navigateTo({
-      url: "../success_deliver/success_deliver"
-    })
   }
-
+  
 });
 

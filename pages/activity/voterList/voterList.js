@@ -1,45 +1,20 @@
-// pages/activity/detailActivity/detailActivity.js
+// pages/activity/voterList/voterList.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    activity:{},
-    userInfo:{}
+  
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.activityId);
-    this.userInfo = wx.getStorageSync("userInfo");
-    this.getActivityDetail(options.activityId);
+  
   },
-  getActivityDetail:function(id){
-      var that = this;
-      wx.request({
-        url: "http://localhost:8080/activity/" + id+"/detail",
-        data:{},
-        method: "GET",
-        header: {
-          "Content-Type": "application/json",
-          "userId": that.userInfo.subOpenId
-        },
-        success: function (res) {
-          console.log(res);
-          console.log(that.userInfo);
-          that.setData({
-            activity: res.data.data,
-            userInfo:that.userInfo
-          });
-        },
-        fail: function (err) {
-          console.log(err)
-        }
-      })
-  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

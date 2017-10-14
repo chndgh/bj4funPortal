@@ -1,4 +1,3 @@
-// pages/activity/historyActivity/historyActivity.js
 Page({
 
   /**
