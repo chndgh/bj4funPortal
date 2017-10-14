@@ -72,7 +72,6 @@ Page({
                   data: JSON.stringify(USER),
                   method: "POST",
                   success: function (res) {
-                    console.log("111111111");
                     that.getAvaliableActivities();
                     wx.setStorageSync("userInfo", res.data.data);
                   },

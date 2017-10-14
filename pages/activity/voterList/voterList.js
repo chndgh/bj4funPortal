@@ -5,15 +5,30 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    activityId,
+    voterList:[],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    this.activityId = options.activityId;
   },
+
+  getActivityById:function(activityId){
+    var that = this;
+    wx.request({
+      url: "http://localhost:8080/activity/" + activityId + "/detail",
+      method: "GET",
+      success: function (res) {
+        that.userList = res.data.data.voters;
+      },
+      fail: function (err) {
+        console.log(err)
+      }
+    })
+  }
 
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -1,2 +1,6 @@
-<!--pages/activity/voterList/voterList.wxml-->
-<text>pages/activity/voterList/voterList.wxml</text>
+<view style="margin-top:10px;height:80px;display:flex;flex-direction:row;align-items:center;">
+  <image style="height:45px;width:45px;border-radius:45px" src="{{userInfo.avatarUrl}}" />
+  <view style='display:flex;flex-direction:column;'>
+      <view style="font-size:15px;text-indent:0.5em;">{{userInfo.nickName}}</view>
+  </view>
+</view>
