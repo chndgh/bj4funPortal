@@ -12,9 +12,16 @@ Page({
     endDate:'',
     endTime:'',
     description:'',
-    activityItem:{}
+    activityItem:{},
+    array:['体育活动','聚餐','休闲娱乐','旅游','学习','会议']
   },
-  bindTitleChange:function(e){
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  bindThemeInput:function(e){
     this.setData({
       inputActivityTitle: e.detail.value
     })
@@ -39,7 +46,12 @@ Page({
       endTime: e.detail.value
     })
   },
-  bindDescChange: function (e) {
+  bindActivityAddressInput: function (e) {
+    this.setData({
+      Address: e.detail.value
+    })
+  },
+  bindActivityDescInput: function (e) {
     this.setData({
       description: e.detail.value
     })

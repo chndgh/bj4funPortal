@@ -1,6 +1,6 @@
 {
   "pages": [
-    
+    "pages/createActivity/createActivity",
     "pages/activity/activity",
     "pages/index/index",
     "pages/flex/flex",
@@ -14,32 +14,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "Let's Happy",
     "navigationBarTextStyle": "black"
-  },
-  "tabBar": {
-    "color": "#fff",
-    "selectedColor": "#32CD32",
-    "borderStyle": "black",
-    "backgroundColor": "#D3D3D3",
-    "list": [
-      {
-        "pagePath": "pages/activity/activity",
-        "iconPath": "icons/activity_2.png",
-        "selectedIconPath": "icons/activity_1.png",
-        "text": "活动"
-      },
-      {
-        "pagePath": "pages/grid/grid",
-        "text": "test"
-      },
-      {
-        "pagePath": "pages/index/index",
-        "text": "活动"
-      },
-      {
-        "pagePath": "pages/flex/flex",
-        "text": "flex"
-      }
-    ]
   }
- 
 }

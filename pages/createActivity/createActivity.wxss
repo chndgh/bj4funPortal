@@ -1,9 +1,2 @@
 /* pages/selfInfo/selfInfo.wxss */
 
-.create_action{
-  font-size:16px;
-  color:black;
-  font-weight:normal;
-  display:flex;
-  text-align:center;
-}
