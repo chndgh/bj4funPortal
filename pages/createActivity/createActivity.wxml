@@ -1,24 +1,25 @@
+<form bindsubmit="formSubmit" bindreset="formReset">
 <view style="background-color:lightgray">
   <view style='display:flex;justify-content:center;background-color:white'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;margin-top:20px;">
           <image src='../../../icons/theme.png' style='height:15px;width:15px;margin-top:1px;'/>
-          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动主题</view>
-          <input type='text' style='font-size:14px;text-indent:0.5em' bindinput="bindThemeInput"></input>
+          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动主题*</view>
+          <input type='text' name='title' style='font-size:14px;text-indent:0.5em' bindinput="bindThemeInput"></input>
     </view>
   </view>
   <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:5px;">
         <image src='../../../icons/startTime.png' style='height:15px;width:15px'/>
-        <view style='font-size:14px; text-indent:0.5em;'>开始日期</view>
+        <view style='font-size:14px; text-indent:0.5em;'>开始日期*</view>
         <view  style='text-indent:1em;flex:1'>
-            <picker name="startDate" mode="date" start="2015-09-01" bindchange="bindstartDateChange">
-                <view style='height:18px;width:20px'>{{startDate}}</view>
+            <picker name="startDate" mode="date" start="{{year}}-{{month}}-{{day}}"  bindchange="bindStartDateChange">
+                <view style='height:13px;display:flex;align-items:center; font-size: 14px'>{{startDate}}</view>
             </picker>
         </view>
-        <view style='font-size:14px; text-indent:0.5em'>时间</view>
+        <view style='font-size:14px; text-indent:0.5em'>时间*</view>
         <view style='text-indent:1em;flex:1'>
             <picker name="startTime" mode="time" bindchange="bindStartTimeChange">
-                <view style='height:18px;width:20px;display:flex;align-items:center;'>{{startTime}}</view>
+                <view style='height:18px;width:20px;display:flex;align-items:center;font-size:14px;'>{{startTime}}</view>
             </picker>
         </view>
     </view>
@@ -26,16 +27,16 @@
   <view style='display:flex;justify-content:center;background-color:white;margin-top:1px'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:5px">
         <image src='../../../icons/endTime.png' style='height:15px;width:15px'/>
-        <view style='font-size:14px; text-indent:0.5em;'>结束日期</view>
+        <view style='font-size:14px; text-indent:0.5em;'>结束日期*</view>
         <view  style='text-indent:1em;flex:1'>
-            <picker name="startDate" mode="date" start="2015-09-01" bindchange="bindstartDateChange">
-                <view style='height:13px;display:flex;align-items:center;'>{{startDate}}</view>
+            <picker name="endDate" mode="date" start="{{actStTime}}" bindchange="bindEndDateChange">
+                <view style='height:13px;display:flex;align-items:center; font-size:14px'>{{endDate}}</view>
             </picker>
         </view>
-        <view style='font-size:14px; text-indent:0.5em'>时间</view>
+        <view style='font-size:14px; text-indent:0.5em'>时间*</view>
         <view style='text-indent:1em;flex:1'>
-            <picker name="startTime" mode="time" bindchange="bindStartTimeChange">
-                <view style='height:13px;display:flex;align-items:center;'>{{startTime}}</view>
+            <picker name="endTime" mode="time" bindchange="bindEndTimeChange">
+                <view style='height:13px;display:flex;align-items:center;font-size:14px;'>{{endTime}}</view>
             </picker>
         </view>
     </view>
@@ -43,22 +44,22 @@
   <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:10px">
           <image src='../../../icons/address.png' style='height:15px;width:15px'/>
-          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动地址</view>
-          <input type='text' style='font-size:14px;text-indent:0.5em' bindinput='bindActivityAddressInput'></input>
+          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动地址*</view>
+          <input type='text' name='address' style='font-size:14px;text-indent:0.5em' bindinput='bindActivityAddressInput'></input>
     </view>
   </view>
   <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;">
           <image src='../../../icons/fee.png' style='height:15px;width:15px'/>
           <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>费用</view>
-          <slider style='width:65%' bindchange="slider4change" min="0" max="50" show-value/>
+          <slider name='cost' style='width:65%' bindchange="bindCostChange" min="0" max="50" show-value/>
     </view>
   </view>
   <view style='display:flex;justify-content:center;background-color:white;'>
     <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;">
           <image src='../../../icons/personCount.png' style='height:15px;width:15px'/>
           <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>人数</view>
-          <slider style='width:65%' bindchange="slider4change" min="0" max="20" show-value/>
+          <slider style='width:65%' name='peoplenumber' bindchange="bindPeopleNumberChange" min="0" max="20" show-value/>
     </view>
   </view>
   <view style='display:flex;justify-content:center;background-color:white;margin-top:1px'>
@@ -66,8 +67,8 @@
         <image src='../../../icons/activityType.png' style='height:15px;width:15px'/>
         <view style='font-size:14px; text-indent:0.5em;'>活动类型</view>
         <view  style='text-indent:1em;flex:1'>
-            <picker value="{{index}}" range="{{array}}" bindchange="bindPickerChange">
-                <view style='height:13px;display:flex;align-items:center;'>{{startDate}}</view>
+            <picker value="{{index}}" range="{{array}}" name='activitytype' bindchange="bindPickerChange">
+                <view style='height:13px;display:flex;align-items:center; font-size:14px'>{{array[activitytypeIndex]}}</view>
             </picker>
         </view>
     </view>
@@ -77,18 +78,19 @@
         <image src='../../../icons/public.png' style='height:15px;width:15px'/>
         <view style='font-size:14px; text-indent:0.5em;'>公开活动</view>
         <view  style='text-indent:1em;flex:1'>
-            <switch checked bindchange="switch2Change"/>
+            <switch name='publicity' checked bindchange="bindActivityPublicity"/>
         </view>
     </view>
   </view>
   <view style='background-color:white;margin-top:5px;margin-bottom:1px'>
     <view style="padding:10px">
-         <textarea style="font-size:14px;height:3.3em;width:95%" bindinput='bindActivityDescInput' placeholder='大概描述一下活动...'></textarea>
+         <textarea style="font-size:14px;height:3.3em;width:95%" name='description' bindinput='bindActivityDescInput' placeholder='大概描述一下活动...'></textarea>
     </view>
   </view>
   <view style='display:flex;background-color:white;flex-direction:row-reverse;'>
     <view style='margin-top:5px;width:50%;'>
-      <button type="primary" style="width:100px;">发布</button>
+      <button type="primary" style="width:100px" form-type='submit'>发布</button>
     </view>
    </view> 
 </view>
+</form>

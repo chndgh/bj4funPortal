@@ -1,13 +1,13 @@
 {
   "pages": [
-    "pages/createActivity/createActivity",
     "pages/activity/activity",
     "pages/index/index",
     "pages/flex/flex",
     "pages/grid/grid",
     "pages/success_deliver/success_deliver",
     "pages/activity/historyActivity/historyActivity",
-    "pages/activity/detailActivity/detailActivity"
+    "pages/activity/detailActivity/detailActivity",
+    "pages/createActivity/createActivity"
   ],
   "window": {
     "backgroundTextStyle": "light",

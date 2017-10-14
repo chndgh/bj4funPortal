@@ -38,104 +38,109 @@
                         </view>   
                     </view>
                     <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
-                        <view class="weui-media-box__info__meta">时间</view>
-                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
-                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
+                        <view class="weui-media-box__info__meta">{{item.startTime}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUserId}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
                         <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
                     </view>
                 </navigator> 
               </view>
               <view hidden="{{activeIndex != 1}}">
                 <form bindsubmit="formSubmit" bindreset="formReset">
-                  <view class="weui-cells weui-cells_after-title">
-                      <view class="weui-cell weui-cell_input" >
-                          <view class="weui-cell__hd">
-                              <view class="create_action" style='text-indent:1em'>主题</view>
-                          </view>
-                          <view class="weui-cell__bd" style='margin-left:18px'>
-                              <input name="title" class="weui-input" bindinput="bindTitleChange" />
-                          </view>
-                      </view>
-                      <view class="weui-cell weui-cell_input" >
-                          <view class="weui-cell__hd">
-                              <view class="create_action" style='text-indent:1em'>地点</view>
-                          </view>
-                          <view class="weui-cell__bd" style='margin-left:18px'>
-                              <input name="title" class="weui-input" bindinput="bindTitleChange" />
-                          </view>
-                      </view>
-                      <view class="weui-cell weui-cell_input" style='margin-bottom:10px;'>
-                          <view class="weui-cell__hd" style='width:100%;'>
-                              <view class="create_action" style="justify-content:center;margin-top:10px;">开始时间</view>
-                          </view>
-                      </view>
-                        <view class="weui-cell weui-cell_input">
-                            <view class="weui-cell__hd">
-                                <view class="create_action" style='text-indent:1em'>日期</view>
-                            </view>
-                            <view class="weui-cell__bd" style='text-indent:1em'>
-                                <picker name="startDate" mode="date" start="2015-09-01" bindchange="bindStartDateChange">
-                                    <view class="weui-input">{{startDate}}</view>
-                                </picker>
-                            </view>
+                <view style="background-color:lightgray">
+                  <view style='display:flex;justify-content:center;background-color:white'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;margin-top:20px;">
+                          <image src='../../../icons/theme.png' style='height:15px;width:15px;margin-top:1px;'/>
+                          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动主题*</view>
+                          <input type='text' name='title' style='font-size:14px;text-indent:0.5em' bindinput="bindThemeInput"></input>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:5px;">
+                        <image src='../../../icons/startTime.png' style='height:15px;width:15px'/>
+                        <view style='font-size:14px; text-indent:0.5em;'>开始日期*</view>
+                        <view  style='text-indent:1em;flex:1'>
+                            <picker name="startDate" mode="date" start="{{year}}-{{month}}-{{day}}"  bindchange="bindStartDateChange">
+                                <view style='height:13px;display:flex;align-items:center; font-size: 14px'>{{startDate}}</view>
+                            </picker>
                         </view>
-                        <view class="weui-cell weui-cell_input">
-                            <view class="weui-cell__hd">
-                                <view class="create_action" style='text-indent:1em'>时间</view>
-                            </view>
-                            <view class="weui-cell__bd" style='text-indent:1em'>
-                                <picker name="startTime" mode="time" bindchange="bindStartTimeChange">
-                                    <view class="weui-input">{{startTime}}</view>
-                                </picker>
-                            </view>
+                        <view style='font-size:14px; text-indent:0.5em'>时间*</view>
+                        <view style='text-indent:1em;flex:1'>
+                            <picker name="startTime" mode="time" bindchange="bindStartTimeChange">
+                                <view style='height:18px;width:20px;display:flex;align-items:center;font-size:14px;'>{{startTime}}</view>
+                            </picker>
                         </view>
-                      <view class="weui-cell weui-cell_input" style='margin-bottom:10px;'>
-                          <view class="weui-cell__hd" style='width:100%;'>
-                              <view class="create_action" style="justify-content:center;margin-top:10px;">结束时间</view>
-                          </view>
-                      </view>
-                      <view class="weui-cell weui-cell_input">
-                            <view class="weui-cell__hd">
-                                <view class="create_action" style='text-indent:1em'>日期</view>
-                            </view>
-                            <view class="weui-cell__bd" style='text-indent:1em'>
-                                <picker name="endDate" mode="date" start="2015-09-01" bindchange="bindEndDateChange">
-                                    <view class="weui-input">{{endDate}}</view>
-                                </picker>
-                            </view>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:1px'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:5px">
+                        <image src='../../../icons/endTime.png' style='height:15px;width:15px'/>
+                        <view style='font-size:14px; text-indent:0.5em;'>结束日期*</view>
+                        <view  style='text-indent:1em;flex:1'>
+                            <picker name="endDate" mode="date" start="{{actStTime}}" bindchange="bindEndDateChange">
+                                <view style='height:13px;display:flex;align-items:center; font-size:14px'>{{endDate}}</view>
+                            </picker>
                         </view>
-                        <view class="weui-cell weui-cell_input">
-                            <view class="weui-cell__hd">
-                                <view class="create_action" style='text-indent:1em'>时间</view>
-                            </view>
-                            <view class="weui-cell__bd" style='text-indent:1em'>
-                                <picker name="endTime" mode="time" bindchange="bindEndTimeChange">
-                                    <view class="weui-input">{{endTime}}</view>
-                                </picker>
-                            </view>
+                        <view style='font-size:14px; text-indent:0.5em'>时间*</view>
+                        <view style='text-indent:1em;flex:1'>
+                            <picker name="endTime" mode="time" bindchange="bindEndTimeChange">
+                                <view style='height:13px;display:flex;align-items:center;font-size:14px;'>{{endTime}}</view>
+                            </picker>
                         </view>
-                        <view >
-                            <view  style='text-align:center;font-size:13px;'>费用</view>
-                            <slider style='width:70%; margin-left:15%' bindchange="slider3change" show-value/>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:10px">
+                          <image src='../../../icons/address.png' style='height:15px;width:15px'/>
+                          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>活动地址*</view>
+                          <input type='text' name='address' style='font-size:14px;text-indent:0.5em' bindinput='bindActivityAddressInput'></input>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:5px;'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;">
+                          <image src='../../../icons/fee.png' style='height:15px;width:15px'/>
+                          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>费用</view>
+                          <slider name='cost' style='width:65%' bindchange="bindCostChange" min="0" max="50" show-value/>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;">
+                          <image src='../../../icons/personCount.png' style='height:15px;width:15px'/>
+                          <view style='font-size:14px;text-indent:0.5em;margin-right:10px'>人数</view>
+                          <slider style='width:65%' name='peoplenumber' bindchange="bindPeopleNumberChange" min="0" max="20" show-value/>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:1px'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:10px">
+                        <image src='../../../icons/activityType.png' style='height:15px;width:15px'/>
+                        <view style='font-size:14px; text-indent:0.5em;'>活动类型</view>
+                        <view  style='text-indent:1em;flex:1'>
+                            <picker value="{{index}}" range="{{array}}" name='activitytype' bindchange="bindPickerChange">
+                                <view style='height:13px;display:flex;align-items:center; font-size:14px'>{{array[activitytypeIndex]}}</view>
+                            </picker>
                         </view>
-                        <view>
-                          <view style='text-align:center;font-size:13px;'>人数</view>
-                            <slider style='width:70%; margin-left:15%' bindchange="slider4change" min="0" max="50" show-value/>
+                    </view>
+                  </view>
+                  <view style='display:flex;justify-content:center;background-color:white;margin-top:1px'>
+                    <view style=" width:90%;display:flex;flex-direction:row;justify-content:left;align-items:center;padding:10px">
+                        <image src='../../../icons/public.png' style='height:15px;width:15px'/>
+                        <view style='font-size:14px; text-indent:0.5em;'>公开活动</view>
+                        <view  style='text-indent:1em;flex:1'>
+                            <switch name='publicity' checked bindchange="bindActivityPublicity"/>
                         </view>
-                      <view class="weui-cells__title">详情</view>
-                        <view class="weui-cells weui-cells_after-title">
-                            <view class="weui-cell">
-                                <view class="weui-cell__bd">
-                                    <textarea class="weui-textarea" style="height: 3.3em" />
-                                </view>
-                            </view>
-                        </view>
+                    </view>
+                  </view>
+                  <view style='background-color:white;margin-top:5px;margin-bottom:1px'>
+                    <view style="padding:10px">
+                        <textarea style="font-size:14px;height:3.3em;width:95%" name='description' bindinput='bindActivityDescInput' placeholder='大概描述一下活动...'></textarea>
+                    </view>
                   </view>
                   <view style='display:flex;background-color:white;flex-direction:row-reverse;'>
-                    <view style='margin-top:11px;width:50%;'>
-                      <button type="primary" bindtap="formSubmit" style="width:100px;">发布</button>
+                    <view style='margin-top:5px;width:50%;'>
+                      <button type="primary" style="width:100px" form-type='submit'>发布</button>
                     </view>
-                  </view>  
+                  </view> 
+                </view>
                 </form>
               </view>
             </view>
