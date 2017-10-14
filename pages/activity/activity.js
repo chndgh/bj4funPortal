@@ -10,10 +10,10 @@ Page({
     activityList:[],
     userInfo:{},
     inputActivityTitle: '',
-    startDate: 0,
-    startTime: 0,
-    endDate: 0,
-    endTime: 0,
+    startDate: '',
+    startTime: '',
+    endDate: '',
+    endTime: '',
     description: ''
   },
   getAvaliableActivities:function(){

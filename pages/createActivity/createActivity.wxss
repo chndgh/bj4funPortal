@@ -3,8 +3,7 @@
 .create_action{
   font-size:16px;
   color:black;
-  font-family:"楷体";
-  font-weight:bold;
+  font-weight:normal;
   display:flex;
-  text-align:right;
+  text-align:center;
 }
