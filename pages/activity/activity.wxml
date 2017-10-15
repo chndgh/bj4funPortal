@@ -39,9 +39,8 @@
                     </view>
                     <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
                         <view class="weui-media-box__info__meta">{{item.startTime}}</view>
-                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUserId}}</view>
+                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
                         <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
-                        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</view>
                     </view>
                 </navigator> 
               </view>
@@ -115,7 +114,7 @@
                         <image src='../../../icons/activityType.png' style='height:15px;width:15px'/>
                         <view style='font-size:14px; text-indent:0.5em;'>活动类型</view>
                         <view  style='text-indent:1em;flex:1'>
-                            <picker value="{{index}}" range="{{array}}" name='activitytype' bindchange="bindPickerChange">
+                            <picker value="{{index}}" range="{{array}}" name='category' bindchange="bindPickerChange">
                                 <view style='height:13px;display:flex;align-items:center; font-size:14px'>{{array[activitytypeIndex]}}</view>
                             </picker>
                         </view>
@@ -126,7 +125,7 @@
                         <image src='../../../icons/public.png' style='height:15px;width:15px'/>
                         <view style='font-size:14px; text-indent:0.5em;'>公开活动</view>
                         <view  style='text-indent:1em;flex:1'>
-                            <switch name='publicity' checked bindchange="bindActivityPublicity"/>
+                            <switch name='isOpen' checked />
                         </view>
                     </view>
                   </view>

@@ -22,15 +22,15 @@
           <view style='font-size:16px; text-indent:0.5em'>已报名{{activity.realCount?activity.realCount:0}}人/限{{activity.maxCount?activity.maxCount:0}}人</view>
         </view>
         <navigator url='../voterList/voterList?activityId={{activity.id}}' hover-class="weui-cell_active" style='font-size:16px; text-indent:0.5em'>
-            <view class="weui-cell__ft weui-cell__ft_in-access">查看</view>
+            <view wx:if="{{!isPresent}}" class="weui-cell__ft weui-cell__ft_in-access">查看</view>
         </navigator>
     </view>
   </view>
 
   <view style="margin-top:10px;height:80px;background-color:white; display:flex;flex-direction:row;align-items:center;">
-      <image style="height:45px;width:45px;border-radius:45px" src="{{userInfo.avatarUrl}}" />
+      <image style="height:45px;width:45px;border-radius:45px" src="{{activity.ownerUser.avatarUrl}}" />
       <view style='display:flex;flex-direction:column;'>
-          <view style="font-size:15px;text-indent:0.5em;font-family:楷体;font-weight:bold;">{{userInfo.nickName}}\t\t\t<text style="font-size:9px;text-indent:1em;background-color:lightblue;font-weight:normal;">组织者</text>
+          <view style="font-size:15px;text-indent:0.5em;font-family:楷体;font-weight:bold;">{{activity.ownerUser.nickName}}\t\t\t<text style="font-size:9px;text-indent:1em;background-color:lightblue;font-weight:normal;">组织者</text>
           </view>
           <view style='font-size:13px;text-indent:0.5em;'>keep looking, don't settle!
           </view>
@@ -47,8 +47,11 @@
     </text>
   </view>
   <view style='display:flex;background-color:white;flex-direction:row-reverse;'>
-    <view style='margin-top:5px;width:50%;'>
-      <button type="primary" style="width:100px;">报名</button>
+    <view wx:if="{{isPresent}}" style='margin-top:5px;width:50%;'>
+      <button type="primary" bindtap='bindVote' style="width:100px;">报名</button>
+    </view>
+    <view wx:if="{{isEdit}}" style='margin-top:5px;width:50%;'>
+      <button type="primary" style="width:100px;">编辑</button>
     </view>
    </view> 
 </view>

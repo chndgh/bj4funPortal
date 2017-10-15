@@ -2,8 +2,6 @@ var utils = require('../../utils/util.js');
 
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 const app = getApp();
-var USER = {}; //pass to back end to login
-var JS_CODE = ''; //store user login js_code
 Page({
   data: {
     tabs: ["所有活动", "创建活动"],
@@ -25,8 +23,8 @@ Page({
     cost: '',
     peoplenumner: '',
     activitytypeIndex: '',
-    array: ['体育活动', '聚餐', '休闲娱乐', '旅游', '学习', '会议'],
-    publicity: '',
+    array: ['运动', '聚餐', '休闲娱乐', '旅游', '学习', '会议'],
+    isOpen: 1,
     description: '',
     activityStatus: {'1001':'未发布', '1002':'投票中', '1003':'待开始', '1004':'进行中', '1005':'已结束'},
     activitylogo: { '100': 'health', '101': 'eat', '102': 'relax', '103': 'reset', '104': 'meeting', '105': 'study' , '106':'category_default'},
@@ -43,6 +41,8 @@ Page({
         "userId": this.userInfo.subOpenId
       },
       success: function (res) {
+        console.log("activity getavailableactivity")
+        console.log(res);
         var actList = res.data.data;
         for (var item in actList) {
           console.log(actList[item]);
@@ -59,44 +59,10 @@ Page({
     })
   },
   onLoad: function () {
+    console.log("activity onload..............");
     var that = this;
     this.userInfo = wx.getStorageSync('userInfo');
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        JS_CODE = res.code;
-        // 获取用户信息
-        wx.getSetting({
-          success: res => {
-            wx.getUserInfo({
-              success: res => {
-                // 可以将 res 发送给后台解码出 unionId
-                USER = res.userInfo;
-                USER.jsCode = JS_CODE;
-                wx.request({
-                  url: "http://localhost:8080/user/login",
-                  data: JSON.stringify(USER),
-                  method: "POST",
-                  success: function (res) {
-                    that.getAvaliableActivities();
-                    wx.setStorageSync("userInfo", res.data.data);
-                  },
-                  fail: function (err) {
-                    console.log(err)
-                  }
-                })
-                // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-                // 所以此处加入 callback 以防止这种情况
-                if (this.userInfoReadyCallback) {
-                  this.userInfoReadyCallback(res)
-                }
-              }
-            })
-          }
-        })
-      }
-    });
+    this.getAvaliableActivities();
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -145,17 +111,14 @@ Page({
   },
 
   bindPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       activitytypeIndex: e.detail.value
     })
-    console.log(e.detail.value)
   },
   bindThemeInput: function (e) {
     this.setData({
       title: e.detail.value
     })
-    console.log(e.detail.value)
   },
   bindStartDateChange: function (e) {
     console.log(e.detail.value);
@@ -184,32 +147,23 @@ Page({
     this.setData({
       address: e.detail.value
     })
-    console.log(e.detail.value)
   },
   bindCostChange: function (e) {
     this.setData({
       cost: e.detail.value
     })
-    console.log(e.detail.value)
   },
   bindPeopleNumberChange: function (e) {
     this.setData({
       peoplenumber: e.detail.value
     })
-    console.log(e.detail.value)
-  },
-  bindActivityPublicity: function (e) {
-    this.setData({
-      Publicity: e.detail.value
-    })
-    console.log(e.detail.value)
   },
   bindActivityDescInput: function (e) {
     this.setData({
       description: e.detail.value
     })
-    console.log(e.detail.value)
   },
+  
   formSubmit: function (e) {
     var that = this;
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
@@ -250,8 +204,11 @@ Page({
       })
       return;
     }
-
-    this.activityItem = { id: 1, title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, people: e.detail.value.peoplenumber, activitytype: that.data.array[e.detail.value.activitytype], publicity: e.detail.value.publicity, description: e.detail.value.description }
+    that.isOpen = e.detail.value.isOpen?1:0;
+    that.category = 100+parseInt(e.detail.value.category);
+    console.log(that.category);
+    that.activityItem = { title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, maxCount: e.detail.value.peoplenumber, category: that.category, isOpen: that.isOpen, description: e.detail.value.description }
+    console.log(that.activityItem);
     wx.request({
       url: "http://localhost:8080/activity/create",
       data: JSON.stringify(that.activityItem),

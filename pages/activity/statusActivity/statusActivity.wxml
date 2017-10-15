@@ -12,7 +12,7 @@
   </view>
   <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
       <view class="weui-media-box__info__meta">{{item.startTime}}</view>
-      <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUserId}}</view>
+      <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
       <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
   </view>
 </navigator> 
