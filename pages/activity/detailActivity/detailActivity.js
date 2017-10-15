@@ -44,7 +44,7 @@ Page({
             that.isEdit = true;
           }
           for (var i in voterList){
-            if (voterList[i].id === that.data.userInfo.subOpenId){
+            if (voterList[i]._id === that.data.userInfo._id){
               console.log("6666");
               that.isPresent = false; 
             }
