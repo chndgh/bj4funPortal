@@ -1,0 +1,13 @@
+<view style="margin-top:10px;height:80px;display:flex;flex-direction:row;align-items:center;">
+  <image style="margin-left:10px;height:45px;width:45px;border-radius:45px" src="{{activity.ownerUser.avatarUrl}}" />
+  <view style='display:flex;flex-direction:column;margin-left:20px'>
+      <view style="font-size:15px;text-indent:0.5em;">{{activity.ownerUser.nickName}}\t\t\t<text style="font-size:9px;text-indent:1em;background-color:lightblue;font-weight:normal;">组织者</text></view>
+  </view>
+</view>
+<view wx:if='{{!voterList}}' style='display:flex; justify-content:center; margin-top:10px'>暂时没有参与者</view>
+<view  wx:for="{{voterList}}" wx:key="*this" style="margin-top:10px;height:80px;display:flex;flex-direction:row;align-items:center;">
+  <image style="margin-left:10px;height:45px;width:45px;border-radius:45px" src="{{item.avatarUrl}}" />
+  <view style='display:flex;flex-direction:column;'>
+      <view style="font-size:15px;text-indent:0.5em;">{{item.nickName}}</view>
+  </view>
+</view>

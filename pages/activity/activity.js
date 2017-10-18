@@ -1,10 +1,14 @@
 var utils = require('../../utils/util.js');
-
+var USER = {}; //pass to back end to login
+var JS_CODE = ''; //store user login js_code
 var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
 const app = getApp();
 Page({
   data: {
     tabs: ["所有活动", "创建活动"],
+    current:"current",
+    history:"history",
+    own:"own",
     activeIndex: 0,
     sliderOffset: 0,
     sliderLeft: 0,
@@ -30,15 +34,78 @@ Page({
     activitylogo: { '100': 'health', '101': 'eat', '102': 'relax', '103': 'reset', '104': 'meeting', '105': 'study' , '106':'category_default'},
     activityItem: {}
   },
-  getAvaliableActivities:function(){
+  onLoad: function () {
     var that = this;
+    console.log("activity on Load");
+    // that.data.userInfo = wx.getStorageSync('userInfo');
+    // console.log(that.data.userInfo);
+
+
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        JS_CODE = res.code;
+        // 获取用户信息
+        wx.getUserInfo({
+          success: res => {
+            // 可以将 res 发送给后台解码出 unionId
+            USER = res.userInfo;
+            USER.jsCode = JS_CODE;
+            wx.request({
+              url: utils.BASE_URL+"/user/login",
+              data: JSON.stringify(USER),
+              method: "POST",
+              success: function (res) {
+                wx.setStorageSync("userInfo", res.data.data);
+                that.data.userInfo = wx.getStorageSync('userInfo');
+                that.getAvaliableActivities();
+              }
+            })
+            
+          }
+        })
+      }
+    })
+
+
+
+
+
+
+
+
+
+
+    // this.getAvaliableActivities();
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+        });
+      }
+    });
+    // 通过setData更改Page()里面的data，动态更新页面的数据  
+    var date = new Date();
+    this.year = date.getFullYear();
+    this.month = date.getMonth() + 2;
+    this.day = date.getDate();
+    this.actStTime = this.year + this.month + this.day
+     
+  },
+  getAvaliableActivities: function () {
+    var that = this;
+    console.log("7777777777777777")
+    console.log(that.data.userInfo);
+    console.log(that.data.userInfo.subOpenId);
     wx.request({
-      url: "http://localhost:8080/activity/available",
+      url: utils.BASE_URL+"/activity/available",
       data: {},
       method: "GET",
       header: {
         "Content-Type": "application/json",
-        "userId": this.userInfo.subOpenId
+        "userId": that.data.userInfo.subOpenId
       },
       success: function (res) {
         console.log("activity getavailableactivity")
@@ -57,27 +124,6 @@ Page({
         console.log(err)
       }
     })
-  },
-  onLoad: function () {
-    console.log("activity onload..............");
-    var that = this;
-    this.userInfo = wx.getStorageSync('userInfo');
-    this.getAvaliableActivities();
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
-          sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
-        });
-      }
-    });
-    // 通过setData更改Page()里面的data，动态更新页面的数据  
-    var date = new Date();
-    this.year = date.getFullYear();
-    this.month = date.getMonth() + 2;
-    this.day = date.getDate();
-    this.actStTime = this.year + this.month + this.day
-     
   },
   tabClick: function (e) {
     this.setData({
@@ -121,8 +167,6 @@ Page({
     })
   },
   bindStartDateChange: function (e) {
-    console.log(e.detail.value);
-    console.log(new Date(e.detail.value).getTime());
     this.setData({
       startDate: e.detail.value,
       actStTime: e.detail.value
@@ -166,11 +210,10 @@ Page({
   
   formSubmit: function (e) {
     var that = this;
-    console.log('form发生了submit事件，携带数据为：', e.detail.value);
-    console.log(e.detail.value.startDate + " " + e.detail.value.startTime);
     var startTime = new Date(e.detail.value.startDate + " " + e.detail.value.startTime).getTime();
     var endTime = new Date(e.detail.value.endDate + " " + e.detail.value.endTime).getTime();
-
+    console.log("111");
+    console.log(new Date(e.detail.value.startDate + " " + e.detail.value.startTime));
     /* tile, time, address must not empty */
     if (e.detail.value.title == "" ||
       e.detail.value.address == "" ||
@@ -208,20 +251,29 @@ Page({
     that.category = 100+parseInt(e.detail.value.category);
     console.log(that.category);
     that.activityItem = { title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, maxCount: e.detail.value.peoplenumber, category: that.category, isOpen: that.isOpen, description: e.detail.value.description }
-    console.log(that.activityItem);
     wx.request({
-      url: "http://localhost:8080/activity/create",
+      url: utils.BASE_URL+"/activity/create",
       data: JSON.stringify(that.activityItem),
       method: "POST",
       header: {
         "Content-Type": "application/json",
-        "userId": this.userInfo.subOpenId
+        "userId": that.data.userInfo.subOpenId
       },
       success: function (res) {
         console.log(res);
         if(res.data.status==0&&res.data.data!=null){
-          wx.navigateTo({
-            url: "statusActivity/statusActivity?status=own"
+          wx.showModal({
+            title: '提示',
+            showCancel: false,
+            content: '发布成功',
+            success: function (res) {
+              console.log(res);
+              if (res.confirm) {
+                wx.navigateTo({
+                  url: "../status/status?status=own"
+                })
+              }
+            }
           })
         }
       },

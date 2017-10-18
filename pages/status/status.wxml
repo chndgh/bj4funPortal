@@ -1,9 +1,9 @@
 
 <view wx:if='{{activityList.length==0}}' style='display:flex; justify-content:center; margin-top:10px'> 暂时无活动 </view>
-<navigator url="../detailActivity/detailActivity?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
+<navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
   <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
-          <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+          <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>

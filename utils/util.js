@@ -23,5 +23,7 @@ function json2Form(json) {
 }
 module.exports = {
   json2Form: json2Form,
-  formatTime: formatTime
+  formatTime: formatTime,
+  //Hou tai
+  BASE_URL: "https://bj4fun.club/dream-0.0.1-SNAPSHOT"
 }

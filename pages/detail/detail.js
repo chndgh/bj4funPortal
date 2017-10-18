@@ -1,52 +1,53 @@
-// pages/activity/detailActivity/detailActivity.js
-var utils = require('../../../utils/util.js');
+var utils = require('../../utils/util.js');
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
     activity:{},
     userInfo:{},
-    isPresent:true,
-    isEdit:false
+    avatarUrl:"../../icons/theme.png",
+    isPresent:true
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.userInfo = wx.getStorageSync("userInfo");
-    this.getActivityDetail(options.activityId);
+    var that = this;
+    this.setData({
+      userInfo: wx.getStorageSync("userInfo")
+    });
+    that.getActivityDetail(options.activityId);
+    console.log("aaaaaaa");
   },
   getActivityDetail:function(id){
       var that = this;
+      console.log(that.data.userInfo);
       wx.request({
-        url: "http://localhost:8080/activity/" + id+"/detail",
+        url: utils.BASE_URL +"/activity/" + id+"/detail",
         data:{},
         method: "GET",
         header: {
           "Content-Type": "application/json",
-          "userId": that.userInfo.subOpenId
+          "userId": that.data.userInfo.subOpenId
         },
         success: function (res) {
+          console.log("bbbbbbbbbb");
           var act = res.data.data;
           var voterList = res.data.data.voters;
           act.startTime = utils.formatTime(new Date(act.startTime));
           act.endTime = utils.formatTime(new Date(act.endTime));
+          console.log(act);
           that.setData({
             activity: act,
-            userInfo:that.userInfo
+            avatarUrl: act.ownerUser.avatarUrl
           });
-          console.log("2222222222");
           console.log(that.data.activity);
-          if (that.userInfo.subOpenId === act.ownerUser._id){
-            that.isEdit = true;
-          }
           for (var i in voterList){
-            if (voterList[i]._id === that.data.userInfo._id){
-              console.log("6666");
-              that.isPresent = false; 
+            if (voterList[i].subOpenId === that.data.userInfo.subOpenId){
+              that.setData({
+                isPresent :false
+              }); 
             }
           }
         },
@@ -58,21 +59,15 @@ Page({
 
   bindVote:function(){
     var that = this;
-    console.log("bindVote");
-    console.log(that.data.activity);
     if(that.data.activity.voters){
-      console.log("999999999999999");
       for (var item in that.data.activity.voters) {
-        console.log("0000000000000");
-        if (that.data.activity.voters[item]._id === that.data.userInfo._id) {
-          console.log("8888888888888888")
+        if (that.data.activity.voters[item].subOpenId === that.data.userInfo.subOpenId) {
           wx.showModal({
             title: '提示',
             showCancel: false,
             content: '您已经报过名了',
             success: function (res) {
               if (res.confirm) {
-
               }
             }
           })
@@ -81,7 +76,7 @@ Page({
       }
     }
     wx.request({
-      url: "http://localhost:8080/activity/vote",
+      url: utils.BASE_URL + "/activity/vote",
       data:  that.data.activity.id,
       method: "POST",
       header: {
@@ -91,7 +86,7 @@ Page({
       success: function (res) {
         if (res.data.status == 0 && res.data.data != null) {
           wx.navigateTo({
-            url: "detailActivity/detailActivity?activityId="+ that.data.activity.id
+            url: "detail?activityId="+ that.data.activity.id
           })
         }
         console.log(res);
@@ -102,7 +97,6 @@ Page({
             content: res.data.msg,
             success: function (res) {
               if (res.confirm) {
-
               }
             }
           })

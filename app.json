@@ -1,11 +1,9 @@
 {
   "pages": [
     "pages/activity/activity",
-    "pages/index/index",
-    "pages/activity/statusActivity/statusActivity",
-    "pages/activity/detailActivity/detailActivity",
-    "pages/createActivity/createActivity",
-    "pages/activity/voterList/voterList"
+    "pages/detail/detail",
+    "pages/status/status",
+    "pages/voterList/voterList"
   ],
   "window": {
     "backgroundTextStyle": "light",
