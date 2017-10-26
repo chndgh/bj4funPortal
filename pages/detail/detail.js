@@ -18,7 +18,6 @@ Page({
       userInfo: wx.getStorageSync("userInfo")
     });
     that.getActivityDetail(options.activityId);
-    console.log("aaaaaaa");
   },
   getActivityDetail:function(id){
       var that = this;
@@ -32,17 +31,14 @@ Page({
           "userId": that.data.userInfo.subOpenId
         },
         success: function (res) {
-          console.log("bbbbbbbbbb");
           var act = res.data.data;
           var voterList = res.data.data.voters;
           act.startTime = utils.formatTime(new Date(act.startTime));
           act.endTime = utils.formatTime(new Date(act.endTime));
-          console.log(act);
           that.setData({
             activity: act,
             avatarUrl: act.ownerUser.avatarUrl
           });
-          console.log(that.data.activity);
           for (var i in voterList){
             if (voterList[i].subOpenId === that.data.userInfo.subOpenId){
               that.setData({
@@ -89,7 +85,6 @@ Page({
             url: "detail?activityId="+ that.data.activity.id
           })
         }
-        console.log(res);
         if (res.data.status == 1 && res.data.data == null) {
           wx.showModal({
             title: '提示',

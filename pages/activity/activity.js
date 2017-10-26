@@ -39,8 +39,6 @@ Page({
     console.log("activity on Load");
     // that.data.userInfo = wx.getStorageSync('userInfo');
     // console.log(that.data.userInfo);
-
-
     // 登录
     wx.login({
       success: res => {
@@ -63,21 +61,15 @@ Page({
               }
             })
             
+          },
+          fail: res => {
+            console.log(res);
+            console.log("fail.........");
           }
         })
       }
     })
-
-
-
-
-
-
-
-
-
-
-    // this.getAvaliableActivities();
+    //get systemInfo
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -86,19 +78,16 @@ Page({
         });
       }
     });
-    // 通过setData更改Page()里面的data，动态更新页面的数据  
+    //设置活动开始时间
     var date = new Date();
     this.year = date.getFullYear();
     this.month = date.getMonth() + 2;
     this.day = date.getDate();
     this.actStTime = this.year + this.month + this.day
-     
   },
+  //获取可以参加的活动
   getAvaliableActivities: function () {
     var that = this;
-    console.log("7777777777777777")
-    console.log(that.data.userInfo);
-    console.log(that.data.userInfo.subOpenId);
     wx.request({
       url: utils.BASE_URL+"/activity/available",
       data: {},
@@ -108,13 +97,9 @@ Page({
         "userId": that.data.userInfo.subOpenId
       },
       success: function (res) {
-        console.log("activity getavailableactivity")
-        console.log(res);
         var actList = res.data.data;
         for (var item in actList) {
-          console.log(actList[item]);
           actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
-          console.log(actList[item].startTime);
         }
         that.setData({
           activityList: actList
@@ -131,31 +116,7 @@ Page({
       activeIndex: e.currentTarget.id
     });
   },
-  upper: function (e) {
-    console.log(e)
-  },
-  lower: function (e) {
-    console.log(e)
-  },
-  scroll: function (e) {
-    console.log(e)
-  },
-  tap: function (e) {
-    for (var i = 0; i < order.length; ++i) {
-      if (order[i] === this.data.toView) {
-        this.setData({
-          toView: order[i + 1]
-        })
-        break
-      }
-    }
-  },
-  tapMove: function (e) {
-    this.setData({
-      scrollTop: this.data.scrollTop + 10
-    })
-  },
-
+  //bind create activity input event
   bindPickerChange: function (e) {
     this.setData({
       activitytypeIndex: e.detail.value
@@ -207,13 +168,15 @@ Page({
       description: e.detail.value
     })
   },
-  
+  onPullDownRefresh : function(){
+    wx.stopPullDownRefresh();
+    this.getAvaliableActivities();
+  },
+  //创建活动提交
   formSubmit: function (e) {
     var that = this;
-    var startTime = new Date(e.detail.value.startDate + " " + e.detail.value.startTime).getTime();
-    var endTime = new Date(e.detail.value.endDate + " " + e.detail.value.endTime).getTime();
-    console.log("111");
-    console.log(new Date(e.detail.value.startDate + " " + e.detail.value.startTime));
+    var startTime = new Date(e.detail.value.startDate.replace(/-/g, "/") + " " + e.detail.value.startTime).getTime();
+    var endTime = new Date(e.detail.value.endDate.replace(/-/g, "/") + " " + e.detail.value.endTime ).getTime();
     /* tile, time, address must not empty */
     if (e.detail.value.title == "" ||
       e.detail.value.address == "" ||
@@ -260,7 +223,6 @@ Page({
         "userId": that.data.userInfo.subOpenId
       },
       success: function (res) {
-        console.log(res);
         if(res.data.status==0&&res.data.data!=null){
           wx.showModal({
             title: '提示',

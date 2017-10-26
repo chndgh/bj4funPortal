@@ -21,22 +21,30 @@ Page({
     this.setData({
       userInfo: wx.getStorageSync('userInfo')
     });
-    if (that.data.status=="history"){
+    that.getActivities();
+  },
+  getActivities:function(){
+    var that = this;
+    if (that.data.status == "history") {
       var list = new Array();
       list.push(1005);
       that.data.sendStatus = list;
-      that.getActivities();
-    } else if (that.data.status=="current"){
+      that.getHistoryOrCurrentActivities();
+    } else if (that.data.status == "current") {
       var list = new Array();
       list.push(1001);
       list.push(1002);
       list.push(1003);
       list.push(1004);
-      that.data.sendStatus=list;
-      that.getActivities();
-    }else if(that.data.status=="own"){
+      that.data.sendStatus = list;
+      that.getHistoryOrCurrentActivities();
+    } else if (that.data.status == "own") {
       that.getOwnActivities();
     }
+  },
+  onPullDownRefresh: function () {
+    wx.stopPullDownRefresh();
+    this.getActivities();
   },
   getOwnActivities:function(){
     var that = this;
@@ -52,6 +60,7 @@ Page({
         for (var item in actList) {
           actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
         }
+        console.log(actList);
         that.setData({
           activityList: actList
         });
@@ -61,9 +70,8 @@ Page({
       }
     })
   },
-  getActivities: function () {
+  getHistoryOrCurrentActivities: function () {
     var that = this;
-    console.log(that.data.userInfo);
     wx.request({
       url: utils.BASE_URL + "/activity/status",
       data: JSON.stringify(that.data.sendStatus),
@@ -73,6 +81,10 @@ Page({
         "userId": that.data.userInfo.subOpenId
       },
       success: function (res) {
+        var actList = res.data.data;
+        for (var item in actList) {
+          actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
+        }
         that.setData({
           activityList: res.data.data
         });
