@@ -1,18 +1,65 @@
 
 <view wx:if='{{activityList.length==0}}' style='display:flex; justify-content:center; margin-top:10px'> 暂时无活动 </view>
-<navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
-  <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
-          <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
-      </view>
-      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-          <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
-          <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
-      </view>   
+
+ <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "own"}}' style="position: relative;display:flex;flex-direction:row-reverse;">
+
+  <view class="item_txt" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" id="{{index}}" style="{{item.txtStyle}}">
+
+    <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
+            <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
+            <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
+        </view>   
+    </view>
+    <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
+        <view class="weui-media-box__info__meta">{{item.startTime}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
+    </view>
   </view>
-  <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
-      <view class="weui-media-box__info__meta">{{item.startTime}}</view>
-      <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
-      <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
-  </view>
-</navigator> 
+
+  <view  class="item_delete" id="{{index}}" catchtap="deletActivity">删除</view>
+
+</navigator>  
+
+ <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "current"}}'>
+
+    <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
+            <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
+            <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
+        </view>   
+    </view>
+    <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
+        <view class="weui-media-box__info__meta">{{item.startTime}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
+    </view>
+
+</navigator>  
+
+
+ <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "history"}}'>
+
+    <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
+            <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
+            <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
+        </view>   
+    </view>
+    <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
+        <view class="weui-media-box__info__meta">{{item.startTime}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
+        <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
+    </view>
+
+</navigator>  

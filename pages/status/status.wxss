@@ -1,1 +1,21 @@
 /* pages/activity/historyActivity/historyActivity.wxss */
+page,
+.page,
+.item_txt{
+  position:absolute;
+  width:100%;
+  background-color:#fff;
+  z-index:5;
+}
+
+.item_delete{
+  display:flex;
+  flex-direction:row-reverse;
+  background-color: #e64340;
+  width: 180rpx;
+  justify-content:center;
+  align-items:center;
+  height:94px;
+  z-index:4;
+  color:#fff;
+}
