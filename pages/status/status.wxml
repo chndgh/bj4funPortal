@@ -1,6 +1,30 @@
 
-<view wx:if='{{activityList.length==0}}' style='display:flex; justify-content:center; margin-top:10px'> 暂时无活动 </view>
-
+<view wx:if='{{activityList.length==0&&activityTypeDisplay=="全部"}}' style='display:flex; justify-content:center; margin-top:10px'> 暂时无活动 </view>
+<view class="sort" wx:if='{{activityList.length!=0||activityTypeDisplay!="全部"}}'>
+      <view class="nav">
+          <view class="nav-son  {{shownavindex == 1? 'active' : ''}}" bindtap="listType" data-nav="1">
+              <view class="content">{{activityTypeDisplay}}</view>
+              <view class="icon"></view>
+          </view>
+          <view class="nav-son {{shownavindex == 2? 'active' : ''}}" bindtap="listSort" data-nav="2">
+              <view class="content">活动排序</view>
+              <view class="icon"></view>
+          </view>
+      </view>
+      <view class="{{sortFilter.activityTypeOpen ? 'directionLeft':'directionRight'}}">
+        <view class="temp temp1 {{sortFilter.activityTypeOpen ? 'slidown' : 'slidup'}} {{sortFilter.activityTypeShow ? '':'disappear'}}">
+          <view wx:for="{{sortFilter.content}}" bindtap="selectCategory" data-index='{{index}}'>
+              {{item}}
+          </view>
+        </view>
+        <view class="temp temp2 {{sortFilter.sortTypeOpen ? 'slidown' : 'slidup'}} {{sortFilter.sortTypeShow ? '':'disappear'}}">
+          <view wx:for="{{sortFilter.content}}" bindtap="selectSort" data-item='{{item}}'>
+              {{item}}
+          </view>
+        </view>
+      </view>
+      <view class="fullbg {{sortFilter.isfull ?'fullopacity':''}}" bindtap="hidebg"></view>
+    </view>
  <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "own"}}' style="position: relative;display:flex;flex-direction:row-reverse;">
 
   <view class="item_txt" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" id="{{index}}" style="{{item.txtStyle}}">
@@ -12,7 +36,7 @@
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
             <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
-        </view>   
+        </view>
     </view>
     <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
         <view class="weui-media-box__info__meta">{{item.startTime}}</view>
@@ -23,7 +47,7 @@
 
   <view  class="item_delete" id="{{index}}" catchtap="deletActivity">删除</view>
 
-</navigator>  
+</navigator>
 
  <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "current"}}'>
 
@@ -34,7 +58,7 @@
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
             <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
-        </view>   
+        </view>
     </view>
     <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
         <view class="weui-media-box__info__meta">{{item.startTime}}</view>
@@ -42,7 +66,7 @@
         <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
     </view>
 
-</navigator>  
+</navigator>
 
 
  <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="{{index}}" wx:if='{{status == "history"}}'>
@@ -54,7 +78,7 @@
         <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
             <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
-        </view>   
+        </view>
     </view>
     <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
         <view class="weui-media-box__info__meta">{{item.startTime}}</view>
@@ -62,4 +86,4 @@
         <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
     </view>
 
-</navigator>  
+</navigator>

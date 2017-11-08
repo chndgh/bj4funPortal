@@ -27,18 +27,28 @@ Page({
     cost: '',
     peoplenumner: '',
     activitytypeIndex: '',
-    array: ['运动', '聚餐', '休闲娱乐', '旅游', '学习', '会议'],
+    array: utils.ACTIVITYTYPE,
     isOpen: 1,
     description: '',
-    activityStatus: {'1001':'未发布', '1002':'投票中', '1003':'待开始', '1004':'进行中', '1005':'已结束'},
+    activityTypeDisplay:'全部',
+    currentCategory:'',
+    sortField:"createTime",
+    activityStatus: utils.ACTIVITYSTATUS,
     activitylogo: { '100': 'health', '101': 'eat', '102': 'relax', '103': 'reset', '104': 'meeting', '105': 'study' , '106':'category_default'},
-    activityItem: {}
+    activityItem: {},
+    sortFilter:{
+      content:[],
+      activityType: [],
+      sortType:[],
+      activityTypeOpen:false,
+      activityTypeShow:false,
+      sortTypeOpen:false,
+      sortTypeShow:false
+    }
   },
   onLoad: function () {
     var that = this;
-    console.log("activity on Load");
-    // that.data.userInfo = wx.getStorageSync('userInfo');
-    // console.log(that.data.userInfo);
+
     // 登录
     wx.login({
       success: res => {
@@ -57,10 +67,9 @@ Page({
               success: function (res) {
                 wx.setStorageSync("userInfo", res.data.data);
                 that.data.userInfo = wx.getStorageSync('userInfo');
-                that.getAvaliableActivities();
+                that.getAvaliableActivities(that.data.sortField);
               }
             })
-            
           },
           fail: res => {
             console.log(res);
@@ -78,6 +87,10 @@ Page({
         });
       }
     });
+    that.setData({
+      'sortFilter.activityType':utils.ACTIVITYTYPE,
+      'sortFilter.sortType' : ['发布时间','参与人数','开始时间']
+    });
     //设置活动开始时间
     var date = new Date();
     this.year = date.getFullYear();
@@ -85,11 +98,121 @@ Page({
     this.day = date.getDate();
     this.actStTime = this.year + this.month + this.day
   },
-  //获取可以参加的活动
-  getAvaliableActivities: function () {
+  listType: function (e) {
+    var that = this;
+    if (that.data.sortFilter.activityTypeOpen) {
+      that.setData({
+        'sortFilter.activityTypeOpen': false,
+        'sortFilter.sortTypeOpen':false,
+        'sortFilter.activityTypeShow':false,
+        'sortFilter.sortTypeShow':false,
+        'sortFilter.isfull': false,
+        'sortFilter.shownavindex': 0,
+      });
+    } else {
+      that.setData({
+        'sortFilter.content': that.data.sortFilter.activityType,
+        'sortFilter.activityTypeOpen': true,
+        'sortFilter.sortTypeOpen': false,
+        'sortFilter.activityTypeShow': true,
+        'sortFilter.sortTypeShow': false,
+        'sortFilter.isfull': true,
+        'sortFilter.shownavindex': e.currentTarget.dataset.nav
+      })
+    }
+  },
+  listSort: function (e) {
+    var that = this;
+    if (that.data.sortFilter.sortTypeOpen) {
+      that.setData({
+        'sortFilter.activityTypeOpen': false,
+        'sortFilter.sortTypeOpen': false,
+        'sortFilter.activityTypeShow': false,
+        'sortFilter.sortTypeShow': false,
+        'sortFilter.isfull': false,
+        'sortFilter.shownavindex': 0,
+      });
+    } else {
+      that.setData({
+        'sortFilter.content': that.data.sortFilter.sortType,
+        'sortFilter.activityTypeOpen': false,
+        'sortFilter.sortTypeOpen': true,
+        'sortFilter.activityTypeShow': false,
+        'sortFilter.sortTypeShow': true,
+        'sortFilter.isfull': true,
+        'sortFilter.shownavindex': e.currentTarget.dataset.nav
+      })
+    }
+  },
+  hidebg: function (e) {
+    this.setData({
+      'sortFilter.activityTypeOpen': false,
+      'sortFilter.sortTypeOpen': false,
+      'sortFilter.activityTypeShow': false,
+      'sortFilter.sortTypeShow': false,
+      'sortFilter.isfull': false,
+      'sortFilter.shownavindex': 0
+    })
+  },
+  //根据活动类型筛选活动
+  selectCategory:function(e){
+    var that = this;
+    this.hidebg();
+    this.setData({
+      activityTypeDisplay: utils.ACTIVITYTYPE[e.currentTarget.dataset.index]
+    });
+    that.setData({
+      currentCategory: 100 + parseInt(e.currentTarget.dataset.index)
+    });
+    that.getAvaliableCategoryActivities(that.data.currentCategory,that.data.sortField);
+  },
+  selectSort:function(e){
+    var that = this;
+    var sortField = e.currentTarget.dataset.item;
+    if (sortField == "发布时间") {
+      that.data.sortField = "createTime";
+    } else if (sortField == "参与人数") {
+      that.data.sortField = "realCount";
+    } else if (sortField == "开始时间") {
+      that.data.sortField = "startTime";
+    }
+    this.hidebg();
+    if (!that.data.currentCategory) {
+      this.getAvaliableActivities(that.data.sortField);
+    } else {
+      this.getAvaliableCategoryActivities(that.data.currentCategory, that.data.sortField);
+    }
+  },
+  //获取不同类型的可参加活动
+  getAvaliableCategoryActivities:function(category,sortField){
     var that = this;
     wx.request({
-      url: utils.BASE_URL+"/activity/available",
+      url: utils.BASE_URL + "/activity/available/"+category+"/category/"+sortField+"/sort",
+      data: {},
+      method: "GET",
+      header: {
+        "Content-Type": "application/json",
+        "userId": that.data.userInfo.subOpenId
+      },
+      success: function (res) {
+        var actList = res.data.data;
+        for (var item in actList) {
+          actList[item].startTime = utils.formatTime(new Date(actList[item].startTime));
+        }
+        that.setData({
+          activityList: actList
+        });
+      },
+      fail: function (err) {
+        console.log(err)
+      }
+    })
+  },
+  //获取可以参加的活动
+  getAvaliableActivities: function (sortField) {
+    var that = this;
+    wx.request({
+      url: utils.BASE_URL+"/activity/available/"+sortField+"/sort",
       data: {},
       method: "GET",
       header: {
@@ -170,7 +293,11 @@ Page({
   },
   onPullDownRefresh : function(){
     wx.stopPullDownRefresh();
-    this.getAvaliableActivities();
+    var that = this;
+    this.setData({
+      activityTypeDisplay: "全部"
+    });
+    this.getAvaliableActivities(that.data.sortField);
   },
   //创建活动提交
   formSubmit: function (e) {
@@ -211,9 +338,8 @@ Page({
       return;
     }
     that.isOpen = e.detail.value.isOpen?1:0;
-    that.category = 100+parseInt(e.detail.value.category);
-    console.log(that.category);
-    that.activityItem = { title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, maxCount: e.detail.value.peoplenumber, category: that.category, isOpen: that.isOpen, description: e.detail.value.description }
+    var category = 100+parseInt(e.detail.value.category);
+    that.activityItem = { title: e.detail.value.title, startTime: startTime, endTime: endTime, address: e.detail.value.address, cost: e.detail.value.cost, maxCount: e.detail.value.peoplenumber, category: category, isOpen: that.isOpen, description: e.detail.value.description }
     wx.request({
       url: utils.BASE_URL+"/activity/create",
       data: JSON.stringify(that.activityItem),

@@ -47,7 +47,7 @@
     </text>
   </view>
   <view style='display:flex;background-color:white;flex-direction:row-reverse;'>
-    <view wx:if="{{isPresent}}" style='margin-top:5px;width:50%;'>
+    <view wx:if="{{isPresent&&!notPresent}}" style='margin-top:5px;width:50%;'>
       <button type="primary" bindtap='bindVote' style="width:100px;">报名</button>
     </view>
    </view> 

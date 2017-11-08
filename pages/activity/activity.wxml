@@ -23,22 +23,52 @@
               <view class="action_sub_style">我的</view>
             </navigator>
       </view>
-      <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}" wx:key="*this">
-          <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
-              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
-                  <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+      <view>
+         <view wx:if='{{activityList.length==0&&activityTypeDisplay=="全部"}}' style='display:flex; justify-content:center; margin-top:10px'> 暂时无可参加的活动 </view>
+         <view class="sort" wx:if='{{activityList.length!=0||activityTypeDisplay!="全部"}}'>
+            <view class="nav">
+                <view class="nav-son  {{shownavindex == 1? 'active' : ''}}" bindtap="listType" data-nav="1">
+                    <view class="content">{{activityTypeDisplay}}</view>
+                    <view class="icon"></view>
+                </view>
+                <view class="nav-son {{shownavindex == 2? 'active' : ''}}" bindtap="listSort" data-nav="2">
+                    <view class="content">活动排序</view>
+                    <view class="icon"></view>
+                </view>
+            </view>
+            <view class="{{sortFilter.activityTypeOpen ? 'directionLeft':'directionRight'}}">
+              <view class="temp temp1 {{sortFilter.activityTypeOpen ? 'slidown' : 'slidup'}} {{sortFilter.activityTypeShow ? '':'disappear'}}">
+                <view wx:for="{{sortFilter.content}}" bindtap="selectCategory" data-index='{{index}}'>
+                    {{item}}
+                </view>
               </view>
-              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-                  <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
-                  <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
-              </view>   
-          </view>
-          <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
-              <view class="weui-media-box__info__meta">{{item.startTime}}</view>
-              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
-              <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
-          </view>
-      </navigator>
+              <view class="temp temp2 {{sortFilter.sortTypeOpen ? 'slidown' : 'slidup'}} {{sortFilter.sortTypeShow ? '':'disappear'}}">
+                <view wx:for="{{sortFilter.content}}" bindtap="selectSort" data-item='{{item}}'>
+                    {{item}}
+                </view>
+              </view>
+            </view>
+            <view class="fullbg {{sortFilter.isfull ?'fullopacity':''}}" bindtap="hidebg"></view>
+        </view> 
+        <navigator url="../detail/detail?activityId={{item.id}}" hover-class="weui-cell_active" wx:for="{{activityList}}">
+          <view style='postion:absolute;z-index:1'>
+            <view class="weui-media-box weui-media-box_appmsg" style='padding:8px;'>
+                <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" style='margin-right:0px;'>
+                    <image class="weui-media-box__thumb" style="vertical-align:middle; height:75%;width:75%;" src="../../icons/{{activitylogo[item.category?item.category:106]}}.png" />
+                </view>
+                <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                    <view class="weui-media-box__title" style="display:flex;justify-content:left;">{{item.title}}</view>
+                    <view class="weui-media-box__desc" style="display:flex;justify-content:left;">{{item.description}}</view>
+                </view>   
+            </view>
+            <view class="weui-media-box__info" style='display:flex;justify-content:center; margin-top:0px'>
+                <view class="weui-media-box__info__meta">{{item.startTime}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{item.ownerUser.nickName}}</view>
+                <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{activityStatus[item.status]}}</view>
+            </view>
+          </view>  
+        </navigator>
+      </view>  
     </view>
     <view hidden="{{activeIndex != 1}}">
       <form bindsubmit="formSubmit" bindreset="formReset">

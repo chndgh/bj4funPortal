@@ -7,7 +7,8 @@ Page({
     activity:{},
     userInfo:{},
     avatarUrl:"../../icons/theme.png",
-    isPresent:true
+    isPresent:true,
+    notPresent:false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -32,6 +33,12 @@ Page({
         },
         success: function (res) {
           var act = res.data.data;
+          var nowTime = new Date().getTime();
+          if (act.startTime < nowTime){
+            that.setData({
+              notPresent : true
+            })
+          };
           var voterList = res.data.data.voters;
           act.startTime = utils.formatTime(new Date(act.startTime));
           act.endTime = utils.formatTime(new Date(act.endTime));
